@@ -1,0 +1,36 @@
+# == Schema Information
+#
+# Table name: characters
+#
+#  id         :integer          not null, primary key
+#  age        :integer
+#  delete_at  :datetime
+#  history    :text
+#  image      :string
+#  name       :string
+#  weight     :float
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+# Indexes
+#
+#  index_characters_on_name  (name)
+#
+
+one:
+  image: MyString
+  name: MyString
+  age: 1
+  weight: 1.5
+  history: MyText
+  movie: one
+  delete_at: 2021-09-27 09:51:53
+
+two:
+  image: MyString
+  name: MyString
+  age: 1
+  weight: 1.5
+  history: MyText
+  movie: two
+  delete_at: 2021-09-27 09:51:53
