@@ -59,5 +59,7 @@ list_characters_p.each do |i, n, a, w, h|
 end
 
 list_characters_r.each do |i, n, a, w, h|
-  Movie.find(1).characters << Character.create(image: i, name: n, age: a, weight: w, history: h )
+  Movie.find(3).characters << Character.create(image: i, name: n, age: a, weight: w, history: h )
 end
+
+Movie.find(4).characters << Character.find(6)

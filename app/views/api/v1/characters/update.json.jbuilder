@@ -1,0 +1,1 @@
+json.character @character, :id, :name, :image, :age, :weight, :history

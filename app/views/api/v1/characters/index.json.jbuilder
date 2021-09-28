@@ -1,0 +1,1 @@
+json.characters @characters, :title, :image
