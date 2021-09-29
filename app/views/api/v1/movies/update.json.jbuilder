@@ -1,0 +1,1 @@
+json.movie @movie, :id, :title, :image, :qualification, :gender_id
