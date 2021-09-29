@@ -2,7 +2,7 @@ class Api::V1::CharactersController < ApplicationController
   before_action :set_character, only: [:show, :update, :destroy]
 
   def index
-    @characters = Character.not_delete
+    @characters = Character.find_by_params(filter_params)
   end
 
   def show
@@ -11,7 +11,7 @@ class Api::V1::CharactersController < ApplicationController
         @character
       end
     else
-      index
+      @characters = Character.find_by_params(filter_params)
     end
   end
 
@@ -74,5 +74,17 @@ class Api::V1::CharactersController < ApplicationController
 
   def character_params
     params.require(:character).permit(:name, :image, :age, :weight, :history)
+  end
+
+  def filter_params
+    hash_params = Hash.new
+    params.permit(:name, :image, :age, :movies).each do |key, value|
+      if value.class == String && value.size > 0 && key != "movies" && key != "age"
+        hash_params[key] = value
+      elsif key == "movies" && value.to_i > 0 || key == "age" && value.to_i > 0
+        hash_params[key] = value
+      end
+    end
+    hash_params
   end
 end
