@@ -14,40 +14,86 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
-@Data
-@NoArgsConstructor
 @Entity
-@Table( name = "gender")
+@Table(name = "gender")
 public class Gender {
-  
+
   @Id
-  @GeneratedValue( strategy = GenerationType.SEQUENCE)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE)
   @Column(name = "id")
   private Long id;
 
-  @Column( name = "name", nullable = false, length = 150)
-  @Size( min = 3, max = 150)
+  @Column(name = "name", nullable = false, length = 150)
+  @Size(min = 3, max = 150)
   private String name;
 
-  @Column( name = "image", nullable = false, length = 250)
-  @Size( min = 10, max = 250)
+  @Column(name = "image", nullable = false, length = 250)
+  @Size(min = 10, max = 250)
   private String image;
 
   @Column(name = "created_at", nullable = false)
   @Temporal(TemporalType.DATE)
-  private Date created_at;
+  private Date createdAt;
 
   @Column(name = "updated_at", nullable = false)
   @Temporal(TemporalType.DATE)
-  private Date updated_at;
+  private Date updatedAt;
 
   @Column(name = "deleted_at", nullable = true)
   @Temporal(TemporalType.DATE)
-  private Date deleted_at;
+  private Date deletedAt;
 
   @OneToMany(mappedBy = "gender")
   private Set<Movie> movies;
+
+  public Long getId() {
+    return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public String getImage() {
+    return image;
+  }
+
+  public void setImage(String image) {
+    this.image = image;
+  }
+
+  public Date getUpdatedAt() {
+    return updatedAt;
+  }
+  public void setUpdatedAt(Date updatedAt) {
+    this.updatedAt = updatedAt;
+  }
+
+  public Date getDeletedAt() {
+    return deletedAt;
+  }
+
+  public void setDeletedAt(Date deletedAt) {
+    this.deletedAt = deletedAt;
+  }
+
+  public Date getCreatedAt() {
+    return createdAt;
+  }
+  public void setCreatedAt(Date createdAt) {
+    this.createdAt = createdAt;
+  }
+
+  @Override
+  public String toString() {
+    return "id: " + this.id + ", name: " + this.name + ", image: " + this.image;
+  }
 }

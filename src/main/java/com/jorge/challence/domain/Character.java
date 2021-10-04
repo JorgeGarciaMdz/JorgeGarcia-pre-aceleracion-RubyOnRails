@@ -53,15 +53,15 @@ public class Character {
 
   @Column(name = "created_at", nullable = false)
   @Temporal(TemporalType.DATE)
-  private Date created_at;
+  private Date createdAt;
 
   @Column(name = "updated_at", nullable = false)
   @Temporal(TemporalType.DATE)
-  private Date updated_at;
+  private Date updatedAt;
 
   @Column(name = "deleted_at", nullable = true)
   @Temporal(TemporalType.DATE)
-  private Date deleted_at;
+  private Date deletedAt;
 
   @ManyToMany( cascade = { CascadeType.ALL})
   @JoinTable(

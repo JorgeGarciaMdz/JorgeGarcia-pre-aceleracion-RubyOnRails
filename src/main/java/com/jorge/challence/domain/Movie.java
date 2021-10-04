@@ -44,15 +44,15 @@ public class Movie {
 
   @Column(name = "created_at", nullable = false)
   @Temporal(TemporalType.DATE)
-  private Date created_at;
+  private Date createdAt;
 
   @Column(name = "updated_at", nullable = false)
   @Temporal(TemporalType.DATE)
-  private Date updated_at;
+  private Date updatedAt;
 
   @Column(name = "deleted_at", nullable = true)
   @Temporal(TemporalType.DATE)
-  private Date deleted_at;
+  private Date deletedAt;
 
   @ManyToOne
   @JoinColumn( name = "gender_id", nullable = false)
