@@ -12,6 +12,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.Valid;
 import javax.validation.constraints.Size;
 
 @Entity
@@ -23,10 +24,12 @@ public class Gender {
   @Column(name = "id")
   private Long id;
 
+  @Valid
   @Column(name = "name", nullable = false, length = 150)
   @Size(min = 3, max = 150)
   private String name;
 
+  @Valid
   @Column(name = "image", nullable = false, length = 250)
   @Size(min = 10, max = 250)
   private String image;

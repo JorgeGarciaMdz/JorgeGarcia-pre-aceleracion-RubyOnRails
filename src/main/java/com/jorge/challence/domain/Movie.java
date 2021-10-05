@@ -1,6 +1,7 @@
 package com.jorge.challence.domain;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -14,19 +15,23 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "movie")
 public class Movie {
   
   @Id
-  @GeneratedValue( strategy = GenerationType.SEQUENCE)
+  @GeneratedValue( strategy = GenerationType.AUTO)
   @Column(name = "id")
   private Long id;
 
@@ -39,7 +44,8 @@ public class Movie {
   private String image;
 
   @Column( name = "qualification", nullable = false)
-  @Size(min = 0, max = 5)
+  @Min(0)
+  @Max(5)
   private int qualification;
 
   @Column(name = "created_at", nullable = false)
@@ -59,5 +65,71 @@ public class Movie {
   private Gender gender;
 
   @ManyToMany(mappedBy = "movies")
-  private Set<Character> characters;
+  private Set<Character> characters = new HashSet<>();
+
+  public Long getId() {
+    return id;
+  }
+  public void setId(Long id) {
+    this.id = id;
+  }
+  
+  public String getTitle() {
+    return title;
+  }
+  public void setTitle(String title) {
+    this.title = title;
+  }
+
+  public String getImage() {
+    return image;
+  }
+  public void setImage(String image) {
+    this.image = image;
+  }
+
+  public int getQualification() {
+    return qualification;
+  }
+  public void setQualification(int qualification) {
+    this.qualification = qualification;
+  }
+
+  public Date getCreatedAt() {
+    return createdAt;
+  }
+  public void setCreatedAt(Date createdAt) {
+    this.createdAt = createdAt;
+  }
+  public Date getUpdatedAt() {
+    return updatedAt;
+  }
+  public void setUpdatedAt(Date updatedAt) {
+    this.updatedAt = updatedAt;
+  }
+  public Date getDeletedAt() {
+    return deletedAt;
+  }
+  public void setDeletedAt(Date deletedAt) {
+    this.deletedAt = deletedAt;
+  }
+
+  public Set<Character> getCharacters() {
+    return characters;
+  }
+  public void setCharacters(Set<Character> characters) {
+    this.characters = characters;
+  }
+
+  public Gender getGender() {
+    return gender;
+  }
+  public void setGender(Gender gender) {
+    this.gender = gender;
+  }
+  @Override
+  public String toString() {
+    return "Id: " + this.id + ", title: " + this.title + ", image: " + this.image + ", qualification: " + 
+          this.qualification + "gender_id: " + gender.getId();
+  }
 }

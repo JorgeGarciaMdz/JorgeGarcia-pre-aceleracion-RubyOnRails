@@ -9,7 +9,7 @@ import javax.persistence.RollbackException;
 import javax.transaction.Transactional;
 
 import com.jorge.challence.domain.Gender;
-import com.jorge.challence.genderDTO.GenderDTO;
+import com.jorge.challence.dto.GenderDTO;
 import com.jorge.challence.repository.GenderRepository;
 import com.jorge.challence.service.GenderService;
 
@@ -18,7 +18,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 @Service
-@Qualifier("GenderServiceMysql")
+@Qualifier("v1_mysql")
 public class GenderServiceI implements GenderService {
 
   private final GenderRepository gr;
@@ -98,11 +98,18 @@ public class GenderServiceI implements GenderService {
   public void deleteGender(Long id) {
     Optional<Gender> g = gr.findByIdAndDeletedAtIsNull(id);
     if(g.isPresent()){
-      System.out.println(g.get().toString());
       g.get().setDeletedAt(new Date());
       gr.saveAndFlush(g.get());
     }
     
+  }
+
+  @Override
+  public Gender findbyId(Long id) {
+    Optional<Gender> g = gr.findByIdAndDeletedAtIsNull(id);
+    if( g.isPresent())
+      return g.get();
+    return null;
   }
 
 }

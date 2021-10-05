@@ -1,4 +1,4 @@
-package com.jorge.challence.genderDTO;
+package com.jorge.challence.dto;
 
 public class GenderDTO {
   private String name;

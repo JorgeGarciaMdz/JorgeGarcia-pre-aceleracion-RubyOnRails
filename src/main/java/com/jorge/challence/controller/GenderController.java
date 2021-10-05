@@ -17,7 +17,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import java.util.HashMap;
 import java.util.List;
-import com.jorge.challence.genderDTO.GenderDTO;
+
+import com.jorge.challence.dto.GenderDTO;
 import com.jorge.challence.service.GenderService;
 
 @RestController
@@ -26,7 +27,7 @@ import com.jorge.challence.service.GenderService;
 public class GenderController {
   
   @Autowired
-  @Qualifier("GenderServiceMysql")
+  @Qualifier("v1_mysql")
   private GenderService gs;
   
   @GetMapping
@@ -64,7 +65,6 @@ public class GenderController {
 
   @DeleteMapping( params = "id")
   public ResponseEntity<?> deleteGender(@RequestParam Long id){
-    System.out.println("---------- params " + id);
     gs.deleteGender(id);
     return new ResponseEntity<>(HttpStatus.ACCEPTED);
   }
