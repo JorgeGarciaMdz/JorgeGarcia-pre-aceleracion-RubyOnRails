@@ -3,10 +3,17 @@ package com.jorge.challence.dto;
 public class CharactersDTO {
   private Long id;
   private String name;
+  private String image;
 
   public CharactersDTO(Long id, String name) {
     this.id = id;
     this.name = name;
+  }
+
+  public CharactersDTO(Long id, String name, String image) {
+    this.id = id;
+    this.name = name;
+    this.image = image;
   }
 
   public Long getId() {
@@ -23,5 +30,13 @@ public class CharactersDTO {
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  public String getImage() {
+    return image;
+  }
+
+  public void setImage(String image) {
+    this.image = image;
   }
 }

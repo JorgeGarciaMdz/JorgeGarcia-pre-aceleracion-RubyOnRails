@@ -1,12 +1,15 @@
 package com.jorge.challence.serviceImplement;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 
 import com.jorge.challence.domain.Character;
 import com.jorge.challence.domain.Movie;
 import com.jorge.challence.dto.CharacterDTO;
+import com.jorge.challence.dto.CharactersDTO;
 import com.jorge.challence.repository.CharacterRepository;
 import com.jorge.challence.service.CharacterService;
 import com.jorge.challence.service.MovieService;
@@ -92,6 +95,17 @@ public class CharacterServiceI implements CharacterService {
       return c_dto;
     }
     return null;
+  }
+
+  @Override
+  public List<CharactersDTO> findAll() {
+    List<Character> c = cr.findByDeletedAtIsNull();
+    List<CharactersDTO> cs_dto = new ArrayList<>();
+
+    for(Character e: c)
+      cs_dto.add(new CharactersDTO(e.getId(), e.getName(), e.getImage()));
+      
+    return cs_dto;
   }
 
 }

@@ -1,8 +1,10 @@
 package com.jorge.challence.controller;
 
 import java.util.HashMap;
+import java.util.List;
 
 import com.jorge.challence.dto.CharacterDTO;
+import com.jorge.challence.dto.CharactersDTO;
 import com.jorge.challence.service.CharacterService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,5 +64,12 @@ public class CharacterController {
       return new ResponseEntity<>(h, HttpStatus.OK);
     }
     return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+  }
+
+  @GetMapping
+  public ResponseEntity<?> findAll(){
+    HashMap<String, List<CharactersDTO>> h = new HashMap<>();
+    h.put("characters", cs.findAll());
+    return new ResponseEntity<>(h, HttpStatus.ACCEPTED);
   }
 }
