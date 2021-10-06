@@ -1,36 +1,36 @@
-# == Schema Information
-#
-# Table name: movies
-#
-#  id            :integer          not null, primary key
-#  delete_at     :datetime
-#  image         :string
-#  qualification :integer
-#  title         :string
-#  created_at    :datetime         not null
-#  updated_at    :datetime         not null
-#  gender_id     :integer          not null
-#
-# Indexes
-#
-#  index_movies_on_gender_id  (gender_id)
-#  index_movies_on_title      (title)
-#
-# Foreign Keys
-#
-#  gender_id  (gender_id => genders.id)
-#
 require "test_helper"
 
 class MovieTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end
-
-  test "Modelo no valido, atributos con valor nil" do
-    m = Movie.new
-    assert_equal false, m.valid?, "El modelo no es valido"
+  test "Modelo valido" do
+    m = Movie.new(title: "aaa", image: "12345", qualification: 5, gender: Gender.new)
+    assert_equal true, m.valid?, "El modelo es valido"
   end
 
-  
+  test "Modelo no valido, todos sus atributos en nil" do
+    m = Movie.new
+    assert_equal false, m.valid?, "El modelo es invalido"
+  end
+
+  test "falta relacion con gender" do
+    m = Movie.new(title: "aaa", image: "12345", qualification: 5)
+    assert_equal false, m.valid?, "El modelo es valido, falta asociacion con gender"
+  end
+
+  test "qualificacion fuera de rango" do
+    m = Movie.new(title: "aaa", image: "12345", qualification: 6, gender: Gender.new)
+    assert_equal false, m.valid?, "qualification fuera de rango"
+  end
+
+  test "Modelo no valido, length image < 5" do
+    m = Movie.new(title: "aaa", image: "1234", qualification: 5, gender: Gender.new)
+    assert_equal false, m.valid?, "El modelo no es valido, longitud minima de image, 5"
+  end
+
+  test "Modelo no valido, longitud title >= 2" do
+    m = Movie.new(title: "aa", image: "12345", qualification: 5, gender: Gender.new)
+    assert_equal false, m.valid?, "El modelo no es valido, title < 3"
+  end
 end
