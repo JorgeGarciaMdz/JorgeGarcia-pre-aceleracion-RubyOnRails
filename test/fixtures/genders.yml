@@ -16,10 +16,10 @@
 
 one:
   name: MyString
-  image: MyString
-  delete_at: 2021-09-27 09:49:23
+  image: MyStringin
+  delete_at: nil
 
 two:
   name: MyString
-  image: MyString
-  delete_at: 2021-09-27 09:49:23
+  image: MyStringin
+  delete_at: nil

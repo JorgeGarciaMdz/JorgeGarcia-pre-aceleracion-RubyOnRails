@@ -18,19 +18,17 @@
 #
 
 one:
-  image: MyString
-  name: MyString
+  image: MyStringOne
+  name: MyNameOne
   age: 1
   weight: 1.5
-  history: MyText
-  movie: one
-  delete_at: 2021-09-27 09:51:53
+  history: MyTextOneHistory
+  delete_at: nil
 
 two:
-  image: MyString
-  name: MyString
+  image: MyStringTwo
+  name: MyNameTwo
   age: 1
   weight: 1.5
-  history: MyText
-  movie: two
-  delete_at: 2021-09-27 09:51:53
+  history: MyTextTwoHistory
+  delete_at: nil

@@ -26,4 +26,11 @@ class MovieTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end
+
+  test "Modelo no valido, atributos con valor nil" do
+    m = Movie.new
+    assert_equal false, m.valid?, "El modelo no es valido"
+  end
+
+  
 end
