@@ -1,4 +1,4 @@
-class Api::V1::GendersController < ApplicationController
+class Api::V1::GendersController < Api::V1::PrivateController
 
   before_action :set_gender, only: [:show, :update, :destroy]
 

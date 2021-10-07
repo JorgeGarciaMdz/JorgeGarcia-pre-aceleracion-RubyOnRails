@@ -1,4 +1,4 @@
-class Api::V1::MoviesController < ApplicationController
+class Api::V1::MoviesController < Api::V1::PrivateController
   before_action :set_movie, only: [:show, :update, :destroy]
   def index
     @movies = Movie.find_by_params(filter_params)
