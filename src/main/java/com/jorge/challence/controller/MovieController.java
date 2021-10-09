@@ -1,9 +1,7 @@
 package com.jorge.challence.controller;
 
 import java.util.HashMap;
-import java.util.List;
 import com.jorge.challence.dto.MovieDTO;
-import com.jorge.challence.dto.MoviesDTO;
 import com.jorge.challence.service.MovieService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,11 +27,19 @@ public class MovieController {
   @Qualifier("v1_mysql")
   private MovieService ms;
 
+  // @GetMapping
+  // public ResponseEntity<?> findAll(){
+  //   HashMap<String, List<MoviesDTO>> h = new HashMap<>();
+  //   h.put("movies", ms.findAll());
+  //   return new ResponseEntity<>(h ,HttpStatus.OK);
+  // }
   @GetMapping
-  public ResponseEntity<?> findAll(){
-    HashMap<String, List<MoviesDTO>> h = new HashMap<>();
-    h.put("movies", ms.findAll());
-    return new ResponseEntity<>(h ,HttpStatus.OK);
+  public ResponseEntity<?> findByParams(
+    @RequestParam ( value = "name", required = false) String name,
+    @RequestParam ( value = "genre", required = false) Long genre,
+    @RequestParam ( value = "order", required = false) String order
+  ){
+    return new ResponseEntity<>(ms.findByParams(name, genre, order) ,HttpStatus.OK);
   }
 
   @GetMapping(params = "id")

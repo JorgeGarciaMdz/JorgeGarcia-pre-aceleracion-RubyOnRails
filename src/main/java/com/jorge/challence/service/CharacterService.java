@@ -12,4 +12,5 @@ public interface CharacterService {
   public void deleteCharacter(Long id);
   public CharacterDTO findById(Long id);
   public List<CharactersDTO> findAll();
+  public List<CharactersDTO> findByParams(String name, Integer age, Float weight, Long movies);
 }

@@ -2,6 +2,7 @@ package com.jorge.challence.serviceImplement;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,14 +45,14 @@ public class MovieServiceI implements MovieService {
   @Override
   public MovieDetailDTO findById(Long id) {
     Optional<Movie> m = mr.findByIdAndDeletedAtIsNull(id);
-    if( m.isPresent()){
+    if (m.isPresent()) {
       MovieDetailDTO md_dto = new MovieDetailDTO();
       md_dto.setId(m.get().getId());
       md_dto.setTitle(m.get().getTitle());
       md_dto.setImage(m.get().getImage());
       md_dto.setQualification(m.get().getQualification());
       md_dto.setCreated_at(m.get().getCreatedAt());
-      for(Character c: m.get().getCharacters()){
+      for (Character c : m.get().getCharacters()) {
         md_dto.addCharacters(new CharactersDTO(c.getId(), c.getName()));
       }
       return md_dto;
@@ -62,7 +63,7 @@ public class MovieServiceI implements MovieService {
   @Override
   public Movie findByIdMovie(Long id) {
     Optional<Movie> m = mr.findByIdAndDeletedAtIsNull(id);
-    if( m.isPresent())
+    if (m.isPresent())
       return m.get();
     return null;
   }
@@ -102,10 +103,38 @@ public class MovieServiceI implements MovieService {
   @Override
   public void deleteMovie(Long id) {
     Optional<Movie> m = mr.findByIdAndDeletedAtIsNull(id);
-    if( m.isPresent()){
+    if (m.isPresent()) {
       m.get().setDeletedAt(new Date());
       m.get().getCharacters().clear();
       mr.saveAndFlush(m.get());
     }
+  }
+
+  @Override
+  public List<MoviesDTO> findByParams(String name, Long gender_id, String order) {
+    HashMap<String, Object> params = new HashMap<>();
+    if (name != null)
+      if (name.length() > 0)
+        params.put("title", name);
+
+    if (gender_id != null) {
+      Gender g = gs.findbyId(gender_id);
+      if (g != null)
+        params.put("gender", g);
+    }
+
+    if (order != null)
+      if (order.toUpperCase().equals("DESC"))
+        params.put("order", "DESC");
+      else
+        params.put("order", "ASC");
+    else
+      params.put("order", "ASC");
+    
+    List<MoviesDTO> m_dto = new ArrayList<>();
+    for (Movie m : mr.findByParams(params))
+      m_dto.add(new MoviesDTO(m.getId(), m.getTitle(), m.getImage(), m.getCreatedAt()));
+
+    return m_dto;
   }
 }

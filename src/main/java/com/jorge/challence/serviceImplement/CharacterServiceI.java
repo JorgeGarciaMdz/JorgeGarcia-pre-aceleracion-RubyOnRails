@@ -2,6 +2,7 @@ package com.jorge.challence.serviceImplement;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -106,6 +107,33 @@ public class CharacterServiceI implements CharacterService {
       cs_dto.add(new CharactersDTO(e.getId(), e.getName(), e.getImage()));
       
     return cs_dto;
+  }
+
+  @Override
+  public List<CharactersDTO> findByParams(String name, Integer age, Float weight, Long movies) {
+    HashMap<String, Object> h = new HashMap<>();
+    if( name != null)
+      h.put("name", name);
+    if( age != null)
+      h.put("age", age);
+    if( weight != null)
+      h.put("weight", weight);
+    if( movies != null) {
+      Movie m = ms.findByIdMovie(movies);
+      if( m != null )
+      h.put("movie", m);
+    }
+
+    List<CharactersDTO> c_dto = new ArrayList<>();
+    if ( movies == null)
+      for (Character c : cr.findByParamsOutMovieId(h))
+        c_dto.add(new CharactersDTO(c.getId(), c.getName(), c.getImage()));
+    // !!! Falta implementacion en el repository
+    else
+      for(Character c: cr.findByParamsWithMovieId(h))
+        c_dto.add(new CharactersDTO(c.getId(), c.getName(), c.getImage()));
+    
+    return c_dto;
   }
 
 }
