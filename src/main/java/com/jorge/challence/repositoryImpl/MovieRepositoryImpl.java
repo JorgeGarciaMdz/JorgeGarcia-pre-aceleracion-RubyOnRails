@@ -49,11 +49,7 @@ public class MovieRepositoryImpl implements MovieRepositoryCustom {
       }
 
       Predicate[] predicates2 = new Predicate[predicates.size()];
-      int i = 0;
-      for (Predicate p : predicates) {
-        predicates2[i] = p;
-        i++;
-      }
+      predicates.toArray(predicates2);
       
       cq.select(r_movie).where(predicates2);
       cq.orderBy(o);

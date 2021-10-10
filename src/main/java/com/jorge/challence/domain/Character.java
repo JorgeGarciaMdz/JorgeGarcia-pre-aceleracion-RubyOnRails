@@ -3,7 +3,6 @@ package com.jorge.challence.domain;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -68,8 +67,9 @@ public class Character {
   private Date deletedAt;
 
   @ManyToMany(cascade = { CascadeType.ALL })
-  @JoinTable(name = "movie_figure", joinColumns = { @JoinColumn(name = "figure_id") }, inverseJoinColumns = {
-      @JoinColumn(name = "movie_id") })
+  @JoinTable(name = "movie_figure", 
+            joinColumns = { @JoinColumn(name = "figure_id") }, 
+            inverseJoinColumns = { @JoinColumn(name = "movie_id") })
   private Set<Movie> movies = new HashSet<>();
 
   public Long getId() {

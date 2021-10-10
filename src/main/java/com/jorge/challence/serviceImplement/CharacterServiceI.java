@@ -110,7 +110,7 @@ public class CharacterServiceI implements CharacterService {
   }
 
   @Override
-  public List<CharactersDTO> findByParams(String name, Integer age, Float weight, Long movies) {
+  public List<CharactersDTO> findByParams(String name, Integer age, Float weight, Long movie_id) {
     HashMap<String, Object> h = new HashMap<>();
     if( name != null)
       h.put("name", name);
@@ -118,17 +118,14 @@ public class CharacterServiceI implements CharacterService {
       h.put("age", age);
     if( weight != null)
       h.put("weight", weight);
-    if( movies != null) {
-      Movie m = ms.findByIdMovie(movies);
-      if( m != null )
-      h.put("movie", m);
+    if( movie_id != null) {
+      h.put("movie", movie_id );
     }
 
     List<CharactersDTO> c_dto = new ArrayList<>();
-    if ( movies == null)
+    if ( movie_id == null)
       for (Character c : cr.findByParamsOutMovieId(h))
         c_dto.add(new CharactersDTO(c.getId(), c.getName(), c.getImage()));
-    // !!! Falta implementacion en el repository
     else
       for(Character c: cr.findByParamsWithMovieId(h))
         c_dto.add(new CharactersDTO(c.getId(), c.getName(), c.getImage()));

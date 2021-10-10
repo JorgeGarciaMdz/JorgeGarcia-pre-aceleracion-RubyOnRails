@@ -1,8 +1,10 @@
 package com.jorge.challence.controller;
 
 import java.util.HashMap;
+import java.util.List;
 
 import com.jorge.challence.dto.CharacterDTO;
+import com.jorge.challence.dto.CharactersDTO;
 import com.jorge.challence.service.CharacterService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,11 +67,14 @@ public class CharacterController {
   }
 
   @GetMapping
-  public ResponseEntity<?> findByParams(@RequestParam(value="name", required = false) String name,
-      @RequestParam(value = "age", required = false) Integer age, @RequestParam(value = "weight", required = false)
-      Float weight, @RequestParam(value = "movies", required = false) Long movies){
-    cs.findByParams(name, age, weight, movies);
-    return new ResponseEntity<>(cs.findByParams(name, age, weight, movies), HttpStatus.ACCEPTED);
+  public ResponseEntity<?> findByParams(
+      @RequestParam(value="name", required = false) String name,
+      @RequestParam(value = "age", required = false) Integer age, 
+      @RequestParam(value = "weight", required = false) Float weight,
+      @RequestParam(value = "movies", required = false) Long movies) {
+      HashMap<String, List<CharactersDTO>> h = new HashMap<>();
+      h.put("characters", cs.findByParams(name, age, weight, movies));
+    return new ResponseEntity<>(h, HttpStatus.ACCEPTED);
   }
 
   // @GetMapping
