@@ -37,8 +37,10 @@ public class GenderController {
     return new ResponseEntity<>(h, HttpStatus.OK);
   }
 
-  @RequestMapping( value = "/{id}", method = RequestMethod.GET)
-  public ResponseEntity<?> findById( @PathVariable(name = "id") Long id){
+  // @RequestMapping( value = "/{id}", method = RequestMethod.GET)
+  // public ResponseEntity<?> findById( @PathVariable(name = "id") Long id){
+  @RequestMapping( params = "id", method = RequestMethod.GET)
+  public ResponseEntity<?> findById( @RequestParam(name = "id") Long id){
     HashMap<String, GenderDTO> h = new HashMap<>();
     h.put("gender", gs.findById(id));
     return new ResponseEntity<>(h, HttpStatus.OK);
@@ -53,7 +55,9 @@ public class GenderController {
 
   @PostMapping
   public ResponseEntity<?> createGender(@RequestBody GenderDTO gdto){
-    return new ResponseEntity<>(gs.saveGender(gdto), HttpStatus.ACCEPTED);
+    HashMap<String, GenderDTO> h = new HashMap<>();
+    h.put("gender", gs.saveGender(gdto));
+    return new ResponseEntity<>(h, HttpStatus.ACCEPTED);
   }
 
   @PutMapping
