@@ -31,7 +31,7 @@ import lombok.NoArgsConstructor;
 public class Movie {
   
   @Id
-  @GeneratedValue( strategy = GenerationType.AUTO)
+  @GeneratedValue( strategy = GenerationType.IDENTITY)
   @Column(name = "id")
   private Long id;
 
@@ -119,6 +119,10 @@ public class Movie {
   }
   public void setCharacters(Set<Character> characters) {
     this.characters = characters;
+  }
+
+  public void addCharacters( Character c){
+    this.characters.add(c);
   }
 
   public Gender getGender() {

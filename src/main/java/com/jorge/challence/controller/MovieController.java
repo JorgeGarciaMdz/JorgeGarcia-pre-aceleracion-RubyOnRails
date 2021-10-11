@@ -1,7 +1,10 @@
 package com.jorge.challence.controller;
 
 import java.util.HashMap;
+import java.util.List;
+
 import com.jorge.challence.dto.MovieDTO;
+import com.jorge.challence.dto.MoviesDTO;
 import com.jorge.challence.service.MovieService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,13 +42,25 @@ public class MovieController {
     @RequestParam ( value = "genre", required = false) Long genre,
     @RequestParam ( value = "order", required = false) String order
   ){
-    return new ResponseEntity<>(ms.findByParams(name, genre, order) ,HttpStatus.OK);
+    HashMap<String, List<MoviesDTO>> h = new HashMap<>();
+    h.put("movies", ms.findByParams(name, genre, order));
+    return new ResponseEntity<>(h ,HttpStatus.OK);
   }
 
   @GetMapping(params = "id")
   public ResponseEntity<?> findById(@RequestParam Long id){
-    ms.findById(id);
-    return new ResponseEntity<>(ms.findById(id), HttpStatus.OK);
+    HashMap<String, Object> h = new HashMap<>();
+    h.put("movie", ms.findById(id));
+    return new ResponseEntity<>(h, HttpStatus.OK);
+  }
+
+  @PostMapping("/add_character")
+  public ResponseEntity<?> addCharacterToMovie(
+    @RequestParam(name = "character_id", required = true) Long character_id,
+    @RequestParam(name = "movie_id", required = true) Long movie_id
+    ){
+    ms.addCharacterToMovie(character_id, movie_id);
+    return new ResponseEntity<>(HttpStatus.ACCEPTED);
   }
 
   @PostMapping()

@@ -55,6 +55,11 @@ public class CharacterServiceI implements CharacterService {
   }
 
   @Override
+  public void updateCharacter(Character c) {
+    cr.saveAndFlush(c);
+  }
+
+  @Override
   public void updateCharacter(CharacterDTO c_dto) {
     Optional<Character> c = cr.findByIdAndDeletedAtIsNull(c_dto.getId());
     if(c.isPresent()){
@@ -80,7 +85,7 @@ public class CharacterServiceI implements CharacterService {
   }
 
   @Override
-  public CharacterDTO findById(Long id) {
+  public CharacterDTO findByIdDTO(Long id) {
     Optional<Character> c = cr.findByIdAndDeletedAtIsNull(id);
     if( c.isPresent()){
       CharacterDTO c_dto = new CharacterDTO();
@@ -133,4 +138,11 @@ public class CharacterServiceI implements CharacterService {
     return c_dto;
   }
 
+  @Override
+  public Character findById(Long id) {
+    Optional<Character> c = cr.findByIdAndDeletedAtIsNull(id);
+    if( c.isPresent())
+      return c.get();
+    return null;
+  }
 }

@@ -14,6 +14,7 @@ import com.jorge.challence.dto.MovieDTO;
 import com.jorge.challence.dto.MovieDetailDTO;
 import com.jorge.challence.dto.MoviesDTO;
 import com.jorge.challence.repository.MovieRepository;
+import com.jorge.challence.service.CharacterService;
 import com.jorge.challence.service.GenderService;
 import com.jorge.challence.service.MovieService;
 
@@ -31,6 +32,9 @@ public class MovieServiceI implements MovieService {
   @Autowired
   @Qualifier("v1_mysql")
   private GenderService gs;
+
+  @Autowired
+  private CharacterService cs;
 
   @Override
   public List<MoviesDTO> findAll() {
@@ -136,5 +140,18 @@ public class MovieServiceI implements MovieService {
       m_dto.add(new MoviesDTO(m.getId(), m.getTitle(), m.getImage(), m.getCreatedAt()));
 
     return m_dto;
+  }
+
+  @Override
+  public void addCharacterToMovie(Long character_id, Long movie_id) {
+    Optional<Movie> m = mr.findByIdAndDeletedAtIsNull(movie_id);
+    if( m.isPresent() ){
+      Character c = cs.findById(character_id);
+      if( c != null){
+        c.addMovie(m.get());
+        cs.updateCharacter(c);
+      }
+    }
+    
   }
 }

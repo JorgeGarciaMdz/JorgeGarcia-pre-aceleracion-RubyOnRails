@@ -57,7 +57,7 @@ public class CharacterController {
 
   @GetMapping(params = "id")
   public ResponseEntity<?> findById(@RequestParam Long id){
-    CharacterDTO c_dto = cs.findById(id);
+    CharacterDTO c_dto = cs.findByIdDTO(id);
     if( c_dto != null){
       HashMap<String, CharacterDTO> h = new HashMap<>();
       h.put("character", c_dto);
