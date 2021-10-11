@@ -1,12 +1,16 @@
-# API
+# API Document
 
-## Registrar usuario
+## Registration and Sessions
 
-* **POST** localhost:3000/users
+* **url** http://localhost:3000/users/
 
-**Body**
+### Registration
 
-```
+#### **POST**
+
+**body**
+
+```json
 {
 	"user":{
 		"email": "jorge@jorge.com",
@@ -16,37 +20,33 @@
 }
 ```
 
-**Respuesta de Creacion**
+**response status code 200** of creation
 
-status code 200
-
-Body 
-
-```
+**body**
+```json
 {
   "message": "Signed up sucessfully."
 }
 ```
 
-**Respuesta no Creacion**
 
-status code 200
+**response status code 200** of don't creation
 
-Body
-
-```
+**body**
+```json
 {
   "message": "Something went wrong."
 }
 ```
 
-## Iniciar Sesion
+### Session
 
-* **POST** localhost:3000/users/sign_in
+#### **POST**
+**path** `/sign_in`
 
-**Body**
+**body**
 
-```
+```json
 {
 	"user":{
 		"email": "jorge@jorge.com",
@@ -55,11 +55,12 @@ Body
 }
 ```
 
-**Respuesta inicio sesion exitosa**
+**response status code 200** of session succefully
 
-**Body**
+`parameter` in **header** : **Authorization**
 
-```
+**body**
+```json
 {
   "message": "You aren´t logged in.",
   "user": {
@@ -71,763 +72,466 @@ Body
 }
 ```
 
-**Header**
+**response status code 200** of don't session
 
-Parametro **Authorization**
-
-
-**Respuesta error inicio sesion**
-
-```
+**body**
+```json
 {
   "message": "You aren´t logged in.",
   "user": null
 }
 ```
 
-## Recurso movies
+______________________
+**All request with** `Authorization` **params in header** 
+______________________
 
-* **Url** localhost:3000/api/v1/movies
+## Genders
 
-* Para solicitar cualquier recurso, se debe enviar el parametro **Authorization** en el 
-header con el token obtenido al inicio de sesion.
+* **url** http://localhost:3000/api/v1/characters
 
-### Obtener todas las movies existentes
+#### **POST**
 
-* **GET** a la url **http://127.0.0.1:3000/api/v1/movies**
+**body**
 
-**Respuesta**
-
-Devuelve una lista de todas las movies existentes, con los atributos id, image y title:
-
-```
+```json
 {
-  "movies": [
+	"name": "paranoia",
+	"image": "url image paranoia"
+}
+```
+
+**response status code 200**
+
+**body**
+```json
+{
+  "gender": {
+    "name": "paranoia",
+    "image": "url image paranoia",
+    "id": 6
+  }
+}
+```
+
+#### **PUT**
+
+**body**
+
+```json
+{
+    "id": 6,
+	"name": "paranormal",
+	"image": "url image paranoia"
+}
+```
+
+**response status code 200**
+
+**body**
+```json
+{
+  "gender": {
+    "name": "paranormal",
+    "image": "url image paranoia",
+    "id": 6
+  }
+}
+```
+
+#### **DELETE**
+
+**params**: id
+
+**response status code 204**
+
+#### **GET**   `FIND ALL`
+
+**params**: `without params`
+
+**response status code 200**
+
+**body**
+```json
+{
+  "genders": [
     {
-      "id": 1,
-      "image": "url image chuki 1",
-      "title": "Chuki 1",
-      "created_at": "2021-09-15T15:15:00.690Z"
+      "name": "accion",
+      "image": "url image accion",
+      "id": 1
     },
     {
-      "id": 2,
-      "image": "url image chuki 2",
-      "title": "Chuki 2",
-      "created_at": "2021-09-15T15:15:00.709Z"
+      "name": "drama",
+      "image": "url image drama",
+      "id": 2
+    },
+    {
+      "name": "animacion",
+      "image": "url image animacion",
+      "id": 3
     }
   ]
 }
 ```
 
-### Obtener la movie con un id especifico
+#### **GET**   `FIND BY ID`
 
-* **GET** a la url **localhost:3000/api/v1/movies?id=1**
+**params**: id
 
-**Respuesta**
+**response status code 200**
 
-200 si hay una entidad movie con el parametro id pasado
-
-Body
-
-```
+**body**
+```json
 {
-  "id": 1,
-  "title": "Chuki 1",
-  "image": "url image chuki 1",
-  "qualification": 3,
-  "created_at": "2021-09-15T15:15:00.690Z",
-  "characters": [
+  "gender": {
+    "name": "animacion",
+    "image": "url image animacion",
+    "id": 3
+  }
+}
+```
+
+#### **GET**   `FIND BY NAME`
+
+**params**: name
+
+**response status code 200**
+
+**body**
+```json
+{
+  "gender": [
     {
-      "id": 1,
-      "name": "Muñeco"
+      "name": "accion",
+      "image": "url image accion",
+      "id": 1
     },
     {
-      "id": 2,
-      "name": "Niño"
+      "name": "animacion",
+      "image": "url image animacion",
+      "id": 3
+    },
+    {
+      "name": "suspenso",
+      "image": "url image suspenso",
+      "id": 4
     }
   ]
 }
 ```
 
-404 si no hay ninguna entidad movie con el id pasado en el parametro
+## Movies
 
-Body
+* **url** http://localhost:3000 /api/v1/movies
 
-```
+#### **POST**
+
+**body**
+
+```json
 {
-  "message": "no entity with id: 19 found"
-}
-```
-
-### Obtener una lista de movies con parametros especificos de busqueda
-
-**Parametro**
-
-**name** indicio del nombre de la movie.
-
-**genre** id del genero de pelicula buscado.
-
-**order** ordena las movies en orden 'ASC' o 'DESC'
-
-* **GET** parametro name y order a **http://127.0.0.1:3000/api/v1/movies?name=a&order=desc**
-
-La respuesta es una lista de movies.
-
-En todos los casos, el code status es 200
-
-El body contendra un arreglo de **"movies"**
-
-### Crear una movie
-
-* **Parametros**  a la url **http://127.0.0.1:3000/api/v1/movies**
-
-**image**: url de la imagen, su longitud minima es de 5 caracteres
-
-**title**: titulo de la movie, longitud minima de 3 caracteres
-
-**qualification**: calificacion de la movie, esta en el rando de 1 a 5
-
-**gender_id**: id del genero de la pelicula
-
-* **POST**
-
-```
-{
-	"image": "url image thoor",
-	"title": "Thoor",
-	"qualification": 4,
-	"gender_id": 2
-}
-```
-
-**Respuesta** 
-
-Status code 201
-
-body
-
-```
-{
-  movie: {
-    "id": 13,
-    "title": "Thoor",
-    "image": "url image thoor",
-    "qualification": 4
-  }
-}
-```
-
-Status code 422
-
-Esto sucede debido a que las restricciones del modelo no se cumplieron
-
-body
-
-```
-{
-  "errors": {
-    "gender": [
-      "must exist"
-    ],
-    "image": [
-      "must have at least 5 characters"
-    ],
-    "title": [
-      "is too short (minimum is 3 characters)"
-    ],
-    "qualification": [
-      "must be less than or equal to 5"
-    ]
-  }
-}
-```
-
-### Actualizar una movie
-
-* **Parametros**  a la url **http://127.0.0.1:3000/api/v1/movies**
-
-**id**: id de la movie
-
-**image**: url de la imagen, su longitud minima es de 5 caracteres
-
-**title**: titulo de la movie, longitud minima de 3 caracteres
-
-**qualification**: calificacion de la movie, esta en el rando de 1 a 5
-
-**gender_id**: id del genero de la pelicula
-
-* **PUT/PATCH**
-
-```
-{
-	"id": 22,
-	"title": "cuboo",
-  "image": "url image of cubo",
+	"title": "Peter pan",
+	"image": "url image peter pan",
 	"qualification": 4,
 	"gender_id": 3
 }
 ```
 
-**Respuesta**
+**response status code 200**
 
-Status code 200
-
-```
+**body**
+```json
 {
   "movie": {
-    "id": 22,
-    "title": "cuboo",
-    "image": "url image of cubo",
+    "id": 7,
+    "title": "Peter pan",
+    "image": "url image peter pan",
+    "qualification": 4
+  }
+}
+```
+
+<!-- #### **POST**. Add character to movie.
+**path** `/add_character`
+
+**params**: movie_id, character_id
+
+**response status code 202** -->
+
+#### **PUT**
+
+**body**
+
+```json
+{
+	"id": 6,
+	"title": "Turbito",
+	"image": "url image turbo",
+	"qualification": 4,
+	"gender_id": 3
+}
+```
+
+**response status code 200**
+
+**body**
+```json
+{
+  "movie": {
+    "id": 6,
+    "title": "Turbito",
+    "image": "url image turbo",
     "qualification": 4,
     "gender_id": 3
   }
 }
 ```
 
-Status code 404
+#### **DELETE**
 
-```
+**params**: id
+
+**response status code 204**
+
+#### **GET**   `FIND ALL`
+
+**params**: `without params`
+
+**response status code 200**
+
+**body**
+```json
 {
-  "message": "no entity with id: 10000 found"
+  "movies": [
+    {
+      "id": 4,
+      "title": "Cars",
+      "image": "url image cars",
+      "created_at": "2021-10-10"
+    },
+    {
+      "id": 5,
+      "title": "Cars 2",
+      "image": "url image cars 2",
+      "created_at": "2021-10-10"
+    },
+    {
+      "id": 1,
+      "title": "Rambo 1",
+      "image": "url image rambo 1",
+      "created_at": "2021-10-10"
+    }
+  ]
 }
 ```
 
-Status code 422
+#### **GET**   `FIND BY ID`
 
-Causa: no pasa las validaciones del modelo
+**params**: id
 
-```
+**response status code 200**
+
+**body**
+```json
 {
-  "errors": {
-    "gender": [
-      "must exist"
-    ],
-    "image": [
-      "must have at least 5 characters"
-    ],
-    "title": [
-      "is too short (minimum is 3 characters)"
-    ],
-    "qualification": [
-      "must be less than or equal to 5"
+  "movie": {
+    "id": 2,
+    "title": "Rambo 2",
+    "image": "url image rambo 2",
+    "qualification": 3,
+    "created_at": "2021-10-10",
+    "characters": [
+      {
+        "id": 1,
+        "name": "Jhon Rambo"
+      },
+      {
+        "id": 3,
+        "name": "Wanda nara"
+      }
     ]
   }
 }
 ```
 
-### Borrar movie 
+#### **GET**   `FIND BY PARAMS`
 
-Se realiza un soft delete en cascada. Se borra una movie y sus personajes
+**params**: name, genre (integer), order (asc or desc).
 
-* **Parametros** a la url **http://127.0.0.1:3000/api/v1/movies?id=22**
+**response status code 200**
 
-**id**: id de la movie que se desea borrar 
-
-**DELETE**
-
-Status code 204, se ha realizado el borrado exitoso
-
-Staus code 400, si no hay entidad con el id pasado
-
-body
-
-```
+**body**
+```json
 {
-  "message": "no entity with id: 13 found"
+  "movies": [
+    {
+      "id": 5,
+      "title": "Cars 2",
+      "image": "url image cars 2",
+      "created_at": "2021-10-10"
+    },
+    {
+      "id": 4,
+      "title": "Cars",
+      "image": "url image cars",
+      "created_at": "2021-10-10"
+    }
+  ]
 }
 ```
 
+## Characters
 
-## Recurso characters
+* **url** http://localhost:8080/api/v1/characters
 
-* **Url** localhost:3000/api/v1/characters
+#### **POST**
 
-* Para solicitar cualquier recurso, se debe enviar el parametro **Authorization** en el 
-header con el token enviado al inicio de sesion.
+**body**
 
-### Obtener todas los characters existentes
-
-* **GET** a la url **http://127.0.0.1:3000/api/v1/characters**
-
-**Respuesta**
-
-Devuelve una lista de todas los characters existentes, con los atributos id, image y name:
-
+```json
+{
+	"name": "tribilin",
+	"image": "image url bribilin",
+	"age": 19,
+	"weight": 1.61,
+	"history": "el trapesista",
+	"movie_id": 3
+}
 ```
+
+**response status code 200**
+
+**body**
+```json
+{
+  "character": {
+    "id": 4,
+    "name": "tribilin",
+    "image": "image url bribilin",
+    "age": 19,
+    "weight": 1.61,
+    "history": "el trapesista",
+    "movies": [
+      {
+        "title": "Rambo 1"
+      }
+    ]
+  }
+}
+```
+
+#### **PUT**
+
+**body**
+
+```json
+{
+	"id": 3,
+	"name": "Wanda naraaaa",
+	"image": "image url wanda nara",
+	"age": 19,
+	"weight": 1.61,
+	"history": "enamorada de jhon rambo, asiatica",
+	"movie_id": 2
+}
+```
+
+**response status code 200**
+
+**body**
+```json
+{
+  "character": {
+    "id": 3,
+    "name": "Wanda naraaaa",
+    "image": "image url wanda nara",
+    "age": 19,
+    "weight": 1.61,
+    "history": "enamorada de jhon rambo, asiatica"
+  }
+}
+```
+
+#### **DELETE**
+
+**params**: id
+
+**response status code 204**
+
+#### **GET**   `FIND ALL`
+
+**params**: `without params`
+
+**response status code 200**
+
+**body**
+```json
 {
   "characters": [
     {
       "id": 1,
-      "name": "Muñeco",
-      "image": "url image muñeco"
+      "name": "Jhon Rambo",
+      "image": "image url jhon rambo"
     },
     {
       "id": 2,
-      "name": "Niño",
-      "image": "url image niño"
+      "name": "Coronel",
+      "image": "image url coronel"
+    },
+    {
+      "id": 3,
+      "name": "Wanda naraaaa",
+      "image": "image url wanda nara"
     }
   ]
 }
 ```
 
-### Obtener charactes con un id especifico
+#### **GET**   `FIND BY ID`
 
-* **GET** a la url **http://127.0.0.1:3000/api/v1/characters?id=6**
+**params**: id
 
-**id**: id del character a buscar
+**response status code 200**
 
-**Respuesta**
-
-200 si hay una entidad character con el parametro id pasado
-
-Body
-
-```
+**body**
+```json
 {
   "character": {
-    "id": 6,
-    "name": "Rambo",
-    "image": "url image rambo",
-    "age": 21,
-    "weight": 1.6,
-    "history": "alguien llamado rambo",
+    "id": 3,
+    "name": "Wanda naraaaa",
+    "image": "image url wanda nara",
+    "age": 19,
+    "weight": 1.61,
+    "history": "enamorada de jhon rambo, asiatica",
     "movies": [
       {
-        "title": "Rambo 1"
-      },
-      {
-        "title": "Rambo 2"
+      "title": "Rambo 2"
       }
     ]
   }
 }
 ```
 
-404 no hay ninguna entidad character con el id pasado en el parametro
+#### **GET**   `FIND BY PARAMS`
 
-Body
+**params**: name, age (integer), weight (float), movies (integer).
 
-```
+**response status code 200**
+
+**body**
+```json
 {
-  "message": "no entity with id: 19 found"
-}
-```
-
-### Obtener una lista de characters con parametros especificos de busqueda
-
-**Parametro**
-
-**name**: nombre del character/personaje.
-
-**age**: edad del character/personaje.
-
-**weight**: altura del character/persona.
-
-**movies**: id de la movie en la que se puede encontrar el personaje.
-
-* **GET** a la url **http://127.0.0.1:3000/api/v1/characters?name=&movies=3**
-
-en todos los casos, el code status es 200
-
-el body contendra un arreglo de **"characters"** con los parametros: id, name, age
-
-```
-{
-  characters: {
-    {
-      "id": 9,
-      "name": "rayo mc quen",
-      "image": "url image rayo mc quen"
-    },
-    {
-      "id": 10,
-      "name": "mate",
-      "image": "url image mate"
-    }
-  }
-}
-```
-
-### Crear un character
-
-* **Parametros** 
-
-**image**: url de la imagen, su longitud minima es de 10 caracteres
-
-**name**: nombre del personaje, longitud minima de 3 caracteres
-
-**age**: edad del personaje, entero positivo
-
-**weight**: altura del personaje
-
-**history**: historia del personaje
-
-**movie_id**: id de la movie a la que pertenece el character
-
-* **POST**
-
-```
-{
-  "name": "Maria",
-  "image": "url image maria",
-  "age": 22,
-  "weight": 1.1,
-  "history": "Secretaria de Hudson Horven",
-  "movie_id": 8
-}
-```
-
-**Respuesta** 
-
-Status code 201
-
-body
-
-```
-{
-  "character": {
-    "id": 13,
-    "name": "mate",
-    "image": "url image mate",
-    "age": 21,
-    "weight": 1.6,
-    "history": "corredor remolcador",
-    "movies": [
-      {
-        "title": "Cars"
-      }
-    ]
-  }
-}
-```
-
-Status code 422
-
-No cumple con las validaciones del modelo.
-
-body
-
-```
-{
-  "errors": {
-    "movie": [
-      "must exist"
-    ],
-    "image": [
-      "must have at least 10 characters"
-    ],
-    "name": [
-      "is too short (minimum is 3 characters)"
-    ],
-    "age": [
-      "must be greater than or equal to 1"
-    ],
-    "weight": [
-      "must be greater than 0.0"
-    ],
-    "history": [
-      "must have at least 10 characters"
-    ]
-  }
-}
-```
-
-### Actualizar un character
-
-* **Parametros**  a la url **http://127.0.0.1:3000/api/v1/characters**
-
-**id**: id del character
-
-**image**: url de la imagen, su longitud minima es de 10 caracteres
-
-**name**: nombre del character, longitud minima de 3 caracteres
-
-**age**: Entero positivo
-
-**weight**: Altura del personaje
-
-**hisotry**: Historia del personaje
-
-* **PUT/PATCH**
-
-```
-{
-	"id": 11,
-  "name": "Celin",
-  "image": "url image Celin",
-  "age": 33,
-  "weight": 2.3,
-  "history": "Secretaria de hudson horven muy aplicada"
-}
-```
-
-**Respuesta**
-
-```
-{
-  "character": {
-    "id": 12,
-    "name": "norma",
-    "image": "url image norma",
-    "age": 21,
-    "weight": 1.6,
-    "history": "corredor remolcador"
-  }
-}
-```
-
-Status code 422
-
-```
-{
-  "errors": {
-    "image": [
-      "must have at least 10 characters"
-    ],
-    "name": [
-      "is too short (minimum is 3 characters)"
-    ],
-    "age": [
-      "must be greater than or equal to 1"
-    ],
-    "weight": [
-      "must be greater than 0.0"
-    ],
-    "history": [
-      "must have at least 10 characters"
-    ]
-  }
-}
-```
-
-### Borrar character
-
-Se realiza un soft delete de un character
-
-* **Parametros** a la url **http://127.0.0.1:3000/api/v1/characters**
-
-**id**: id del character que se desea borrar
-
-**DELETE**
-
-Status code 204, se ha realizado el borrado exitoso
-
-Staus code 400, si no hay entidad con el id pasado
-
-body
-
-```
-{
-  "message": "no entity with id: 13 found"
-}
-```
-
-
-## Recurso genders
-
-* **Url** localhost:3000/api/v1/genders
-
-* Para solicitar cualquier recurso, se debe enviar el parametro **Authorization** en el 
-header con el token enviado al inicio de sesion.
-
-### Obtener todas los genders existentes
-
-* **GET** a la url **http://127.0.0.1:3000/api/v1/genders**
-
-**Respuesta**
-
-Devuelve una lista de todas los genders existentes, con los atributos id, image y name:
-
-```
-{
-  "genders": [
+  "characters": [
     {
       "id": 1,
-      "name": "romantico",
-      "image": "url image romantico"
+      "name": "Jhon Rambo",
+      "image": "image url jhon rambo"
     },
     {
-      "id": 2,
-      "name": "accion",
-      "image": "url image accion"
+      "id": 3,
+      "name": "Wanda naraaaa",
+      "image": "image url wanda nara"
     }
   ]
-}
-```
-
-### Obtener genders con un id especifico
-
-* **GET** a la url **http://127.0.0.1:3000/api/v1/genders?id=6**
-
-**id**: id del gender a buscar
-
-**Respuesta**
-
-200 si hay una entidad gender con el parametro id pasado
-
-Body
-
-```
-{
-  "gender": {
-    "id": 1,
-    "name": "romantico",
-    "image": "url image romantico"
-  }
-}
-```
-
-404 no hay ninguna entidad gender con el id pasado en el parametro
-
-Body
-
-```
-{
-  "message": "no entity with id: 19 found"
-}
-```
-
-### Obtener una lista de gender con un nombre
-
-**Parametro**
-
-**name**: nombre del gender.
-
-* **GET** a la url **http://127.0.0.1:3000/api/v1/characters?name=acc**
-
-en todos los casos, el code status es 200
-
-el body contendra un arreglo de **"gender"** con los parametros: id, name, image
-
-```
-{
-  "gender": [
-    {
-      "id": 2,
-      "name": "accion",
-      "image": "url image accion"
-    }
-  ]
-}
-```
-
-### Crear un gender
-
-* **Parametros** 
-
-**image**: url de la image, su longitud minima es de 10 caracteres
-
-**name**: nombre del gender, longitud minima de 3 caracteres
-
-* **POST** a la url **http://127.0.0.1:3000/api/v1/genders**
-
-```
-{
-	"name": "drama",
-	"image": "url image velico"
-}
-```
-
-**Respuesta** 
-
-Status code 200
-
-body
-
-```
-{
-  "gender": {
-    "id": 8,
-    "name": "drama",
-    "image": "url image velico"
-  }
-}
-```
-
-Status code 422
-
-No cumple con las validaciones del modelo.
-
-body
-
-```
-{
-  "error": {
-    "name": [
-      "is too short (minimum is 3 characters)"
-    ],
-    "image": [
-      "must have at least 10 characters"
-    ]
-  }
-}
-```
-
-### Actualizar un gender
-
-* **Parametros**  a la url **http://127.0.0.1:3000/api/v1/gender**
-
-**id**: id del character
-
-**image**: url de la imagen, su longitud minima es de 10 caracteres
-
-**name**: nombre del gender, longitud minima de 3 caracteres
-
-* **PUT/PATCH**
-
-```
-{
-	"id": 8,
-  "name": "dramatico",
-  "image": "url image velico"
-}
-```
-
-**Respuesta**
-
-```
-{
-  "gender": {
-    "id": 8,
-    "name": "dramatico",
-    "image": "url image velico"
-  }
-}
-```
-
-Status code 422
-
-```
-{
-  "error": {
-    "name": [
-      "is too short (minimum is 3 characters)"
-    ],
-    "image": [
-      "must have at least 10 characters"
-    ]
-  }
-}
-```
-
-### Borrar gender
-
-Se realiza un soft delete de un character
-
-* **Parametros** a la url **http://127.0.0.1:3000/api/v1/gender?id=13**
-
-**id**: id del character que se desea borrar
-
-**DELETE**
-
-Status code 204, se ha realizado el borrado exitoso
-
-Staus code 400, si no hay entidad con el id pasado
-
-body
-
-```
-{
-  "message": "no entity with id: 13 found"
 }
 ```
