@@ -8,7 +8,11 @@ Things you may want to cover:
 * java version 8.
 
 * Database configuration
-    * En application.properties se debe reemplazar el usuairo, la contraseña y el path de la base de datos.
+    * Se utiliza MySql maria DB 8.0.26
+    * En application.properties se debe reemplazar:
+        * path: url_base_de_datos
+        * Usuario: su_usuario.
+        * Contraseña: su_contraseña.
 
 * Database creation
 
