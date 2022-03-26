@@ -14,9 +14,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
+
 import java.util.HashMap;
 import java.util.List;
 
+import com.jorge.challence.buildError.HandlerError;
 import com.jorge.challence.dto.GenderDTO;
 import com.jorge.challence.service.GenderService;
 
@@ -28,6 +32,9 @@ public class GenderController {
   @Autowired
   @Qualifier("v1_mysql")
   private GenderService gs;
+
+  @Autowired
+  private HandlerError handleError;
   
   @GetMapping
   public ResponseEntity<?> findAllGenders(){
@@ -53,14 +60,20 @@ public class GenderController {
   }
 
   @PostMapping
-  public ResponseEntity<?> createGender(@RequestBody GenderDTO gdto){
+  public ResponseEntity<?> createGender(@Validated @RequestBody GenderDTO gdto, BindingResult result){
+    if( result.hasErrors())
+      return new ResponseEntity<>(handleError.getErrors(result),HttpStatus.UNPROCESSABLE_ENTITY);
     HashMap<String, GenderDTO> h = new HashMap<>();
     h.put("gender", gs.saveGender(gdto));
-    return new ResponseEntity<>(h, HttpStatus.ACCEPTED);
+    return new ResponseEntity<>(h, HttpStatus.CREATED);
   }
 
-  @PutMapping
-  public ResponseEntity<?> updateGender(@RequestBody GenderDTO g_dto){
+  @PutMapping()
+  public ResponseEntity<?> updateGender(@Validated @RequestBody GenderDTO g_dto, BindingResult result, @RequestParam(name = "id", required = false) Long id){
+    if(result.hasErrors())
+      return new ResponseEntity<>(handleError.getErrors(result), HttpStatus.UNPROCESSABLE_ENTITY);
+    if( id != null )
+      g_dto.setId(id);
     HashMap<String, GenderDTO> h = new HashMap<>();
     h.put("gender", gs.updateGender(g_dto));
     return new ResponseEntity<>(h, HttpStatus.ACCEPTED);
