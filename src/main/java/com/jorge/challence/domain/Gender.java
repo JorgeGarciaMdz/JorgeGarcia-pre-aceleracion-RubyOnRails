@@ -76,6 +76,7 @@ public class Gender {
   public Date getUpdatedAt() {
     return updatedAt;
   }
+
   public void setUpdatedAt(Date updatedAt) {
     this.updatedAt = updatedAt;
   }
@@ -91,8 +92,25 @@ public class Gender {
   public Date getCreatedAt() {
     return createdAt;
   }
+
   public void setCreatedAt(Date createdAt) {
     this.createdAt = createdAt;
+  }
+
+  public Set<Movie> getMovies() {
+    return movies;
+  }
+
+  public void setMovies(Set<Movie> movies) {
+    this.movies = movies;
+  }
+
+  public void addMovies(Movie movie) {
+    movies.add(movie);
+  }
+
+  public void removeMovie(Movie movie) {
+    movies.remove(movie);
   }
 
   @Override
