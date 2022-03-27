@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
+
 import com.jorge.challence.domain.Character;
 import com.jorge.challence.domain.Gender;
 import com.jorge.challence.domain.Movie;
@@ -88,14 +89,18 @@ public class MovieServiceI implements MovieService {
       m_dto.setId(m.getId());
       m_dto.getCharacters().forEach(c -> {
         Character ch = new Character();
-        ch.setName(c.getName());
-        ch.setImage(c.getImage());
-        ch.setAge(c.getAge());
-        ch.setWeight(c.getWeight());
-        ch.setHistory(c.getHistory());
-        ch.addMovie(m);
-        cs.createCharacter(ch);
-        c.setId(ch.getId());
+        try {
+          ch.setName(c.getName());
+          ch.setImage(c.getImage());
+          ch.setAge(c.getAge());
+          ch.setWeight(c.getWeight());
+          ch.setHistory(c.getHistory());
+          ch.addMovie(m);
+          cs.createCharacter(ch);
+          c.setId(ch.getId());
+        } catch (Exception e) {
+          System.out.println(e.hashCode() + e.getMessage() + e.getCause());
+        }
       });
     }
   }
@@ -137,9 +142,9 @@ public class MovieServiceI implements MovieService {
   }
 
   @Override
-  public void deleteCharacter(Long idCharacter, Long idMovie){
+  public void deleteCharacter(Long idCharacter, Long idMovie) {
     Optional<Movie> m = mr.findByIdAndDeletedAtIsNull(idMovie);
-    if( m.isPresent()){
+    if (m.isPresent()) {
       m.get().removeCharacterById(idCharacter);
       mr.save(m.get());
     }
