@@ -25,8 +25,8 @@ public class MovieDTO {
 
   @Valid
   @NotNull
-  @Min(value = 0)
-  @Max(value = 10)
+  @Min(value = 1)
+  @Max(value = 5)
   private Integer qualification;
 
   @Valid

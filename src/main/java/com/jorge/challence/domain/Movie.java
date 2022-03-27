@@ -44,7 +44,7 @@ public class Movie {
   private String image;
 
   @Column(name = "qualification", nullable = false)
-  @Min(0)
+  @Min(1)
   @Max(5)
   private int qualification;
 

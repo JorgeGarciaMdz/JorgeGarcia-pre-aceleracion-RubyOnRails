@@ -94,7 +94,7 @@ public class MovieServiceI implements MovieService {
         ch.setWeight(c.getWeight());
         ch.setHistory(c.getHistory());
         ch.addMovie(m);
-        cs.creacteCharacter(ch);
+        cs.createCharacter(ch);
         c.setId(ch.getId());
       });
     }

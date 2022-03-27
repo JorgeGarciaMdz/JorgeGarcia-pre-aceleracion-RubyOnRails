@@ -3,6 +3,9 @@ package com.jorge.challence.controller;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.validation.Valid;
+
+import com.jorge.challence.buildError.HandlerError;
 import com.jorge.challence.dto.CharacterDTO;
 import com.jorge.challence.dto.CharactersDTO;
 import com.jorge.challence.service.CharacterService;
@@ -11,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,8 +34,14 @@ public class CharacterController {
   @Qualifier("v1_mysql")
   private CharacterService cs;
 
+  @Autowired
+  private HandlerError handlerError;
+
   @PostMapping
-  public ResponseEntity<?> createCharacter(@RequestBody CharacterDTO c_dto) {
+  public ResponseEntity<?> createCharacter(@Valid @RequestBody CharacterDTO c_dto, BindingResult result){
+    if(result.hasErrors())
+      return new ResponseEntity<>(handlerError.getErrors(result), HttpStatus.UNPROCESSABLE_ENTITY);
+
     cs.createCharacter(c_dto);
     if (c_dto.getId() != null) {
       HashMap<String, CharacterDTO> h = new HashMap<>();
@@ -42,7 +52,12 @@ public class CharacterController {
   }
 
   @PutMapping
-  public ResponseEntity<?> updateCharacter(@RequestBody CharacterDTO c_dto){
+  public ResponseEntity<?> updateCharacter(@Valid @RequestBody CharacterDTO c_dto, BindingResult result, 
+  @RequestParam(name = "id", required = false) Long id){
+    if( result.hasErrors())
+      return new ResponseEntity<>(handlerError.getErrors(result), HttpStatus.UNPROCESSABLE_ENTITY);
+    if( id != null)
+    c_dto.setId(id);
     cs.updateCharacter(c_dto);
     HashMap<String, CharacterDTO> h = new HashMap<>();
     h.put("character", c_dto);

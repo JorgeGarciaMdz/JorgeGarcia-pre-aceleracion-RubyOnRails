@@ -3,13 +3,40 @@ package com.jorge.challence.dto;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
+
 public class CharacterDTO {
   private Long id;
+
+  @Valid
+  @NotBlank
+  @Length(min = 3, max = 150)
   private String name;
+
+  @Valid
+  @NotBlank
+  @Length(min = 3, max = 250)
   private String image;
-  private int age;
-  private float weight;
+
+  @NotNull
+  @Min(value = 0)
+  @Max(value = 300)
+  private Integer age;
+
+  @NotNull
+  @Min(value = 0)
+  private Float weight;
+
+  @NotBlank
+  @Length(min = 5, max = 250)
   private String history;
+
   private Set<String> movies = new HashSet<>();
   private Long movie_id;
 
@@ -40,19 +67,19 @@ public class CharacterDTO {
     this.image = image;
   }
 
-  public int getAge() {
+  public Integer getAge() {
     return age;
   }
 
-  public void setAge(int age) {
+  public void setAge(Integer age) {
     this.age = age;
   }
 
-  public float getWeight() {
+  public Float getWeight() {
     return weight;
   }
 
-  public void setWeight(float weight) {
+  public void setWeight(Float weight) {
     this.weight = weight;
   }
 
