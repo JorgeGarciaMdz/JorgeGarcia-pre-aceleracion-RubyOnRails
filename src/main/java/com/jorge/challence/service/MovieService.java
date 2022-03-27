@@ -16,4 +16,5 @@ public interface MovieService {
   public void deleteMovie(Long id);
   public List<MoviesDTO> findByParams(String name, Long gender_id, String order);
   public void addCharacterToMovie(Long character_id, Long movie_id);
+  public void deleteCharacter(Long idCharacter, Long idMovie);
 }

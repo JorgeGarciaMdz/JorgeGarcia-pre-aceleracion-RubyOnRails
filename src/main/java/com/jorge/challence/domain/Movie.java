@@ -29,21 +29,21 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "movie")
 public class Movie {
-  
+
   @Id
-  @GeneratedValue( strategy = GenerationType.IDENTITY)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id")
   private Long id;
 
-  @Column( name = "title", nullable = false, length = 150)
-  @Size( min = 3, max = 150)
+  @Column(name = "title", nullable = false, length = 150)
+  @Size(min = 3, max = 150)
   private String title;
 
-  @Column( name = "image", nullable = false, length = 250 )
+  @Column(name = "image", nullable = false, length = 250)
   @Size(min = 10, max = 250)
   private String image;
 
-  @Column( name = "qualification", nullable = false)
+  @Column(name = "qualification", nullable = false)
   @Min(0)
   @Max(5)
   private int qualification;
@@ -61,7 +61,7 @@ public class Movie {
   private Date deletedAt;
 
   @ManyToOne
-  @JoinColumn( name = "gender_id", nullable = false)
+  @JoinColumn(name = "gender_id", nullable = false)
   private Gender gender;
 
   @ManyToMany(mappedBy = "movies")
@@ -70,13 +70,15 @@ public class Movie {
   public Long getId() {
     return id;
   }
+
   public void setId(Long id) {
     this.id = id;
   }
-  
+
   public String getTitle() {
     return title;
   }
+
   public void setTitle(String title) {
     this.title = title;
   }
@@ -84,6 +86,7 @@ public class Movie {
   public String getImage() {
     return image;
   }
+
   public void setImage(String image) {
     this.image = image;
   }
@@ -91,6 +94,7 @@ public class Movie {
   public int getQualification() {
     return qualification;
   }
+
   public void setQualification(int qualification) {
     this.qualification = qualification;
   }
@@ -98,18 +102,23 @@ public class Movie {
   public Date getCreatedAt() {
     return createdAt;
   }
+
   public void setCreatedAt(Date createdAt) {
     this.createdAt = createdAt;
   }
+
   public Date getUpdatedAt() {
     return updatedAt;
   }
+
   public void setUpdatedAt(Date updatedAt) {
     this.updatedAt = updatedAt;
   }
+
   public Date getDeletedAt() {
     return deletedAt;
   }
+
   public void setDeletedAt(Date deletedAt) {
     this.deletedAt = deletedAt;
   }
@@ -117,23 +126,30 @@ public class Movie {
   public Set<Character> getCharacters() {
     return characters;
   }
+
   public void setCharacters(Set<Character> characters) {
     this.characters = characters;
   }
 
-  public void addCharacters( Character c){
+  public void addCharacters(Character c) {
     this.characters.add(c);
+  }
+
+  public void removeCharacterById(Long idCharacter) {
+    this.characters.removeIf((Character c) -> c.getId() == idCharacter);  
   }
 
   public Gender getGender() {
     return gender;
   }
+
   public void setGender(Gender gender) {
     this.gender = gender;
   }
+
   @Override
   public String toString() {
-    return "Id: " + this.id + ", title: " + this.title + ", image: " + this.image + ", qualification: " + 
-          this.qualification + "gender_id: " + gender.getId();
+    return "Id: " + this.id + ", title: " + this.title + ", image: " + this.image + ", qualification: " +
+        this.qualification + "gender_id: " + gender.getId();
   }
 }

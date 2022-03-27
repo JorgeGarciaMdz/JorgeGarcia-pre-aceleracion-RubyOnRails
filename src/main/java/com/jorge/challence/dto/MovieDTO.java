@@ -1,13 +1,43 @@
 package com.jorge.challence.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.validation.Valid;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.Length;
+
 public class MovieDTO {
   private Long id;
+
+  @Valid
+  @Length(min = 3, max = 150)
+  @NotNull
   private String title;
+
+  @Valid
+  @Length(min = 3, max = 250)
+  @NotNull
   private String image;
-  private int qualification;
+
+  @Valid
+  @NotNull
+  @Min(value = 0)
+  @Max(value = 10)
+  private Integer qualification;
+
+  @Valid
+  @Min(value = 0)
+  @NotNull
   private Long gender_id;
 
-  public MovieDTO(){ }
+  private List<CharacterDTO> characters = new ArrayList<>();
+
+  public MovieDTO() {
+  }
 
   public MovieDTO(String title, String image, int qualification, Long gender_id) {
     this.title = title;
@@ -48,11 +78,11 @@ public class MovieDTO {
     this.image = image;
   }
 
-  public int getQualification() {
+  public Integer getQualification() {
     return qualification;
   }
 
-  public void setQualification(int qualification) {
+  public void setQualification(Integer qualification) {
     this.qualification = qualification;
   }
 
@@ -62,5 +92,17 @@ public class MovieDTO {
 
   public void setGender_id(Long gender_id) {
     this.gender_id = gender_id;
+  }
+
+  public List<CharacterDTO> getCharacters() {
+    return characters;
+  }
+
+  public void setCharacters(List<CharacterDTO> characters) {
+    this.characters = characters;
+  }
+
+  public void addCharacters(CharacterDTO characterDTO){
+    this.characters.add(characterDTO);
   }
 }

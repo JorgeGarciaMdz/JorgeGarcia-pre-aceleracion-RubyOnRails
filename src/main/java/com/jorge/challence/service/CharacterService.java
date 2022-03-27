@@ -9,6 +9,7 @@ import com.jorge.challence.dto.CharactersDTO;
 public interface CharacterService {
   
   public void createCharacter( CharacterDTO c_dto);
+  public void creacteCharacter(Character character);
   public void updateCharacter( CharacterDTO c_dto);
   public void updateCharacter(Character c);
   public void deleteCharacter(Long id);

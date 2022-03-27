@@ -9,6 +9,7 @@ import java.util.Optional;
 import com.jorge.challence.domain.Character;
 import com.jorge.challence.domain.Gender;
 import com.jorge.challence.domain.Movie;
+import com.jorge.challence.dto.CharacterDTO;
 import com.jorge.challence.dto.CharactersDTO;
 import com.jorge.challence.dto.MovieDTO;
 import com.jorge.challence.dto.MovieDetailDTO;
@@ -57,7 +58,7 @@ public class MovieServiceI implements MovieService {
       md_dto.setQualification(m.get().getQualification());
       md_dto.setCreated_at(m.get().getCreatedAt());
       for (Character c : m.get().getCharacters()) {
-        md_dto.addCharacters(new CharactersDTO(c.getId(), c.getName()));
+        md_dto.addCharacters(new CharactersDTO(c.getId(), c.getName(), c.getImage()));
       }
       return md_dto;
     }
@@ -85,6 +86,17 @@ public class MovieServiceI implements MovieService {
       m.setGender(g);
       mr.saveAndFlush(m);
       m_dto.setId(m.getId());
+      m_dto.getCharacters().forEach(c -> {
+        Character ch = new Character();
+        ch.setName(c.getName());
+        ch.setImage(c.getImage());
+        ch.setAge(c.getAge());
+        ch.setWeight(c.getWeight());
+        ch.setHistory(c.getHistory());
+        ch.addMovie(m);
+        cs.creacteCharacter(ch);
+        c.setId(ch.getId());
+      });
     }
   }
 
@@ -100,6 +112,16 @@ public class MovieServiceI implements MovieService {
         m.get().setUpdatedAt(new Date());
         m.get().setGender(g);
         mr.saveAndFlush(m.get());
+        m.get().getCharacters().forEach(c -> {
+          CharacterDTO cd = new CharacterDTO();
+          cd.setId(c.getId());
+          cd.setName(c.getName());
+          cd.setImage(c.getImage());
+          cd.setHistory(c.getHistory());
+          cd.setWeight(c.getWeight());
+          cd.setHistory(c.getHistory());
+          m_dto.addCharacters(cd);
+        });
       }
     }
   }
@@ -111,6 +133,15 @@ public class MovieServiceI implements MovieService {
       m.get().setDeletedAt(new Date());
       m.get().getCharacters().clear();
       mr.saveAndFlush(m.get());
+    }
+  }
+
+  @Override
+  public void deleteCharacter(Long idCharacter, Long idMovie){
+    Optional<Movie> m = mr.findByIdAndDeletedAtIsNull(idMovie);
+    if( m.isPresent()){
+      m.get().removeCharacterById(idCharacter);
+      mr.save(m.get());
     }
   }
 
@@ -134,7 +165,7 @@ public class MovieServiceI implements MovieService {
         params.put("order", "ASC");
     else
       params.put("order", "ASC");
-    
+
     List<MoviesDTO> m_dto = new ArrayList<>();
     for (Movie m : mr.findByParams(params))
       m_dto.add(new MoviesDTO(m.getId(), m.getTitle(), m.getImage(), m.getCreatedAt()));
@@ -145,13 +176,13 @@ public class MovieServiceI implements MovieService {
   @Override
   public void addCharacterToMovie(Long character_id, Long movie_id) {
     Optional<Movie> m = mr.findByIdAndDeletedAtIsNull(movie_id);
-    if( m.isPresent() ){
+    if (m.isPresent()) {
       Character c = cs.findById(character_id);
-      if( c != null){
+      if (c != null) {
         c.addMovie(m.get());
         cs.updateCharacter(c);
       }
     }
-    
+
   }
 }

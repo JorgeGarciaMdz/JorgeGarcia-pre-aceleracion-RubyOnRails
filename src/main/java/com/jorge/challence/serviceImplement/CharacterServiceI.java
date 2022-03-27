@@ -54,6 +54,12 @@ public class CharacterServiceI implements CharacterService {
     }
   }
 
+  public void creacteCharacter(Character character){
+    character.setCreatedAt(new Date());
+    character.setUpdatedAt(new Date());
+    cr.saveAndFlush(character);
+  }
+
   @Override
   public void updateCharacter(Character c) {
     cr.saveAndFlush(c);
